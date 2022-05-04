@@ -56,3 +56,4 @@ Temporary Items
 .docker-sync/
 
 .run/
+.phpunit.result.cache
