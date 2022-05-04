@@ -1,5 +1,5 @@
 {
-  "name": "prhost/ideris-sdk",
+  "name": "orbitalcodes/ideris-sdk",
   "description": "SDK para integracao com Ideris",
   "type": "library",
   "minimum-stability": "stable",
