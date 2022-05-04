@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ideris\Model;
+namespace Ideris\Models;
 
 use Ideris\Classes\ModelItemBase;
 
@@ -12,8 +12,8 @@ use Ideris\Classes\ModelItemBase;
 class Status extends ModelItemBase
 {
     protected $attributeMap = [
-        "id"        => "Integer",
-        "descricao" => "String",
-        "modulo"    => "String",
+        "id"        => "int",
+        "descricao" => "string",
+        "modulo"    => "string",
     ];
 }

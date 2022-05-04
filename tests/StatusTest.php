@@ -2,39 +2,35 @@
 
 namespace Tests;
 
-use Ideris\Api\Ideris;
 use Ideris\Classes\Collection;
-use Ideris\Model\Status;
-use Ideris\Model\Statuses;
+use Ideris\Collections\Status;
+use Ideris\Models\Status as StatusModel;
 
 class StatusTest extends TestCaseApi
 {
     public function testGetStatuses(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $statuses = $iderisSdk->status()->get();
-        $this->assertInstanceOf(Statuses::class, $statuses);
-        $this->assertInstanceOf(Collection::class, $statuses);
-        $this->assertInstanceOf(Status::class, $statuses->first());
+        $status = $this->getIderisSdk()->status()->get();
+        $this->assertInstanceOf(Status::class, $status);
+        $this->assertInstanceOf(Collection::class, $status);
+        $this->assertInstanceOf(StatusModel::class, $status->first());
     }
 
     public function testGetStatusesPaginate(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $statuses = $iderisSdk->status()->get();
+        $status = $this->getIderisSdk()->status()->get();
 
-        $this->assertEquals(0, $statuses->getOffset());
-        $this->assertTrue($statuses->getCount() <= $statuses->getLimit());
+        $this->assertEquals(0, $status->getOffset());
+        $this->assertTrue($status->getCount() <= $status->getLimit());
     }
 
     public function testGetStatusesOffsetLimit(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $statuses = $iderisSdk->status()->get(2, 5);
+        $status = $this->getIderisSdk()->status()->get(2, 5);
 
-        $this->assertEquals(2, $statuses->getOffset());
-        $this->assertTrue($statuses->getCount() === 5);
-        $this->assertTrue($statuses->getTotal() <= 50);
-        $this->assertTrue($statuses->getLimit() === 5);
+        $this->assertEquals(2, $status->getOffset());
+        $this->assertTrue($status->getCount() === 5);
+        $this->assertTrue($status->getTotal() <= 50);
+        $this->assertTrue($status->getLimit() === 5);
     }
 }

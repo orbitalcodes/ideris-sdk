@@ -3,7 +3,7 @@
 namespace Ideris\Endpoints;
 
 use Ideris\Classes\EndpointBase;
-use \Ideris\Model\Marketplaces as MarketplacesModel;
+use Ideris\Collections\Marketplaces;
 
 class Marketplace extends EndpointBase
 {
@@ -12,9 +12,9 @@ class Marketplace extends EndpointBase
      *
      * @see https://documenter.getpostman.com/view/4554319/S1a63SJM#e3d76bcf-950d-486a-91be-fdf20f75a0b3
      *
-     * @return MarketplacesModel
+     * @return Marketplaces
      */
-    public function get(int $offset = 0, int $limit = 50): MarketplacesModel
+    public function get(int $offset = 0, int $limit = 50): Marketplaces
     {
         $response = $this->request('GET', 'Marketplace', [
             'query' => [
@@ -23,6 +23,6 @@ class Marketplace extends EndpointBase
             ]
         ])->getResponse();
 
-        return new MarketplacesModel($response);
+        return new Marketplaces($response);
     }
 }

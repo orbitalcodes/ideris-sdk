@@ -36,7 +36,14 @@ trait TraitModelBase
 
     public function __set($attribute, $value)
     {
-        $this->attributeValues[$attribute] = $value;
+        $attributeType = $this->attributeMap[$attribute] ?? null;
+
+        if (class_exists($attributeType) && $value instanceof $attributeType)
+            $this->attributeValues[$attribute] = $value;
+        elseif (class_exists($attributeType))
+            $this->attributeValues[$attribute] = new $attributeType($value);
+        else
+            $this->attributeValues[$attribute] = $value;
     }
 
     public function __get($attribute)
@@ -48,12 +55,20 @@ trait TraitModelBase
     {
         if (strpos($name, 'get') === 0) {
             $attribute = ltrim($name, 'get');
-            return $this->{General::snake_case($attribute)};
+            if (isset($this->attributeMap[General::snake_case($attribute)]))
+                return $this->{General::snake_case($attribute)};
+            else if (isset($this->attributeMap[\ucwords($attribute)]))
+                return $this->{\ucwords($attribute)};
         }
 
         if (strpos($name, 'set') === 0) {
             $attribute = ltrim($name, 'set');
-            $this->{General::snake_case($attribute)} = array_shift(array_values($arguments));
+            $value = array_values($arguments);
+
+            if (isset($this->attributeMap[General::snake_case($attribute)]))
+                $this->{General::snake_case($attribute)} = array_shift($value);
+            else if (isset($this->attributeMap[\ucwords($attribute)]))
+                $this->{\ucwords($attribute)} = array_shift($value);
         }
     }
 

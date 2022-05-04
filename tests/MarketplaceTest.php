@@ -2,17 +2,16 @@
 
 namespace Tests;
 
-use Ideris\Api\Ideris;
 use Ideris\Classes\Collection;
-use Ideris\Model\Marketplace;
-use Ideris\Model\Marketplaces;
+use Ideris\Collections\Marketplaces;
+use Ideris\Models\Marketplace;
 
 class MarketplaceTest extends TestCaseApi
 {
     public function testGetMarketplaces(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $marketplaces = $iderisSdk->marketplace()->get();
+        $marketplaces = $this->getIderisSdk()->marketplace()->get();
+
         $this->assertInstanceOf(Marketplaces::class, $marketplaces);
         $this->assertInstanceOf(Collection::class, $marketplaces);
         $this->assertInstanceOf(Marketplace::class, $marketplaces->first());
@@ -20,8 +19,7 @@ class MarketplaceTest extends TestCaseApi
 
     public function testGetMarketplacesPaginate(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $marketplaces = $iderisSdk->marketplace()->get();
+        $marketplaces = $this->getIderisSdk()->marketplace()->get();
 
         $this->assertEquals(0, $marketplaces->getOffset());
         $this->assertTrue($marketplaces->getCount() <= $marketplaces->getLimit());
@@ -29,8 +27,7 @@ class MarketplaceTest extends TestCaseApi
 
     public function testGetMarketplacesOffsetLimit(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $marketplaces = $iderisSdk->marketplace()->get(2, 5);
+        $marketplaces = $this->getIderisSdk()->marketplace()->get(2, 5);
 
         $this->assertEquals(2, $marketplaces->getOffset());
         $this->assertTrue($marketplaces->getCount() === 5);

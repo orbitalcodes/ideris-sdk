@@ -3,7 +3,7 @@
 namespace Ideris\Endpoints;
 
 use Ideris\Classes\EndpointBase;
-use Ideris\Model\Auth as AuthModel;
+use Ideris\Models\Autenticacao as AuthModel;
 
 class Auth extends EndpointBase
 {

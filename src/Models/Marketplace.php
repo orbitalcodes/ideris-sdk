@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ideris\Model;
+namespace Ideris\Models;
 
 use Ideris\Classes\ModelItemBase;
 
@@ -12,7 +12,7 @@ use Ideris\Classes\ModelItemBase;
 class Marketplace extends ModelItemBase
 {
     protected $attributeMap = [
-        "id"        => "Integer",
-        "descricao" => "String",
+        "id"        => "int",
+        "descricao" => "string",
     ];
 }

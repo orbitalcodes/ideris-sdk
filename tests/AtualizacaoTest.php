@@ -2,26 +2,23 @@
 
 namespace Tests;
 
-use Ideris\Api\Ideris;
 use Ideris\Classes\Collection;
-use Ideris\Model\Update;
-use Ideris\Model\Updates;
+use Ideris\Collections\Atualizacoes;
+use Ideris\Models\Atualizacao;
 
-class UpdateTest extends TestCaseApi
+class AtualizacaoTest extends TestCaseApi
 {
     public function testGetUpdates(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $updates = $iderisSdk->update()->get();
-        $this->assertInstanceOf(Updates::class, $updates);
+        $updates = $this->getIderisSdk()->update()->get();
+        $this->assertInstanceOf(Atualizacoes::class, $updates);
         $this->assertInstanceOf(Collection::class, $updates);
-        $this->assertInstanceOf(Update::class, $updates->first());
+        $this->assertInstanceOf(Atualizacao::class, $updates->first());
     }
 
     public function testGetUpdatesPaginate(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $updates = $iderisSdk->update()->get();
+        $updates = $this->getIderisSdk()->update()->get();
 
         $this->assertEquals(0, $updates->getOffset());
         $this->assertTrue($updates->getCount() <= $updates->getLimit());
@@ -29,8 +26,7 @@ class UpdateTest extends TestCaseApi
 
     public function testGetUpdatesOffsetLimit(): void
     {
-        $iderisSdk = new Ideris($this->login_token);
-        $updates = $iderisSdk->update()->get(2, 5);
+        $updates = $this->getIderisSdk()->update()->get(2, 5);
 
         $this->assertEquals(2, $updates->getOffset());
         $this->assertTrue($updates->getCount() === 5);

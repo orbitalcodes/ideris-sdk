@@ -3,7 +3,7 @@
 namespace Ideris\Classes;
 
 
-abstract class ModelCollectionBase extends Collection
+abstract class CollectionBase extends Collection
 {
     use TraitModelBase;
 

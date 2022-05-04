@@ -3,7 +3,7 @@
 namespace Ideris\Endpoints;
 
 use Ideris\Classes\EndpointBase;
-use \Ideris\Model\Statuses as StatusesModel;
+use Ideris\Collections\Status as StatusCollection;
 
 class Status extends EndpointBase
 {
@@ -12,9 +12,9 @@ class Status extends EndpointBase
      *
      * @see https://documenter.getpostman.com/view/4554319/S1a63SJM#3c9c92c7-165f-4d19-985a-1065b03db35d
      *
-     * @return StatusesModel
+     * @return StatusCollection
      */
-    public function get(int $offset = 0, int $limit = 50): StatusesModel
+    public function get(int $offset = 0, int $limit = 50): StatusCollection
     {
         $response = $this->request('GET', 'Status', [
             'query' => [
@@ -23,6 +23,6 @@ class Status extends EndpointBase
             ]
         ])->getResponse();
 
-        return new StatusesModel($response);
+        return new StatusCollection($response);
     }
 }

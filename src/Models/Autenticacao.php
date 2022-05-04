@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ideris\Model;
+namespace Ideris\Models;
 
 use Ideris\Classes\ModelItemBase;
 
@@ -9,7 +9,7 @@ use Ideris\Classes\ModelItemBase;
  * @method getJwtToken(): string
  * @method setJwtToken(string $jwt_token)
  */
-class Auth extends ModelItemBase
+class Autenticacao extends ModelItemBase
 {
     protected $attributeMap = [
         "jwt_token" => "string",

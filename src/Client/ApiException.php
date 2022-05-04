@@ -13,12 +13,10 @@ class ApiException extends Exception
      */
     protected $response;
 
-    protected $errors = [];
-
     public function __construct($message, int $code, Response $response)
     {
         $this->response = $response;
-        $message = $this->response->getResponse()->Message ?? $message;
+        $message = ((string)$this->response->getBody()) ?: $this->response->getResponse()->Message ?? $message;
 
         parent::__construct($message, $code);
     }
@@ -26,35 +24,11 @@ class ApiException extends Exception
     /**
      * Get the HTTP response header
      *
-     * @return string HTTP response header
+     * @return Response
      */
-    public function getResponse()
+    public function getResponse(): Response
     {
         return $this->response;
-    }
-
-    /**
-     * Return errors list
-     * @return array errors
-     */
-    public function getErrors()
-    {
-        $errors = $this->response->getResponse()->Errors ?? null;
-
-        if ($errors != null && is_array($errors)) {
-            foreach ($errors as $error) {
-                $this->errors[] = $this->getCode() . ' - ' . $this->getErrorMessageByCode($this->getCode()) . ' - ' . $error->Message;
-            }
-        } else {
-            $this->errors[] = $this->getCode() . ' - ' . $this->getErrorMessageByCode($this->getCode()) . ' - ' . $this->getMessage();
-        }
-
-        return $this->errors;
-    }
-
-    public function getErrorMessageCode(): string
-    {
-        return $this->getErrorMessageByCode($this->getCode());
     }
 
     /**

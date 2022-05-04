@@ -4,9 +4,9 @@ namespace Tests;
 
 use Ideris\Api\Ideris;
 use Ideris\Client\ApiException;
-use Ideris\Model\Auth as AuthModel;
+use Ideris\Models\Autenticacao as AuthModel;
 
-class AuthTest extends TestCaseApi
+class AutenticacaoTest extends TestCaseApi
 {
     public function testAuthentication(): void
     {
