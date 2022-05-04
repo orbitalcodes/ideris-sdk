@@ -2,8 +2,12 @@
 
 namespace Tests;
 
+use Ideris\Classes\Collection;
+use Ideris\Collections\Produto\Imagens;
+use Ideris\Collections\Produto\Produtos;
 use Ideris\Models\Produto\Imagem;
 use Ideris\Models\Produto\Produto;
+use Ideris\Models\Produto\ProdutoRetornado;
 use Ideris\Models\Protocolo;
 
 class ProdutoTest extends TestCaseApi
@@ -28,6 +32,98 @@ class ProdutoTest extends TestCaseApi
             'produtoModel'      => $produtoModel,
             'protocoloReturned' => $protocoloReturned
         ];
+    }
+
+    /**
+     * @depends testCreateRandomSimpleProduto
+     */
+    public function testGetBySkuProduto(array $result): Produtos
+    {
+        sleep(3);
+
+        $produtos = $this->getIderisSdk()->produto()->get($result['produtoModel']->sku);
+
+        $this->assertInstanceOf(Produtos::class, $produtos);
+        $this->assertInstanceOf(Collection::class, $produtos);
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtos->first());
+        $this->assertInstanceOf(Imagens::class, $produtos->first()->getImagens());
+        $this->assertEquals(0, $produtos->first()->getImagens()->count());
+
+        $produtos = $this->getIderisSdk()->produto()->get($result['produtoModel']->sku, true);
+
+        $this->assertInstanceOf(Produtos::class, $produtos);
+        $this->assertInstanceOf(Collection::class, $produtos);
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtos->first());
+        $this->assertInstanceOf(Imagens::class, $produtos->first()->getImagens());
+        $this->assertTrue($produtos->first()->getImagens()->count() > 0);
+        $this->assertInstanceOf(Imagem::class, $produtos->first()->getImagens()->first());
+
+        return $produtos;
+    }
+
+    /**
+     * @depends testCreateRandomSimpleProduto
+     */
+    public function testGetProduto(array $result): Produtos
+    {
+        $produtos = $this->getIderisSdk()->produto()->get();
+
+        $this->assertInstanceOf(Produtos::class, $produtos);
+        $this->assertInstanceOf(Collection::class, $produtos);
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtos->first());
+
+        return $produtos;
+    }
+
+    /**
+     * @depends testGetProduto
+     */
+    public function testGetByIdProduto(Produtos $produtos): ProdutoRetornado
+    {
+        $produtoFinded = $this->getIderisSdk()->produto()->getById($produtos->first()->id);
+
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtoFinded);
+        $this->assertInstanceOf(Imagens::class, $produtoFinded->getImagens());
+        $this->assertEquals(0, $produtoFinded->getImagens()->count());
+
+        $produtoFinded = $this->getIderisSdk()->produto()->getById($produtos->first()->id, true);
+
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtoFinded);
+        $this->assertInstanceOf(Imagens::class, $produtoFinded->getImagens());
+        $this->assertTrue($produtoFinded->getImagens()->count() > 0);
+        $this->assertInstanceOf(Imagem::class, $produtoFinded->getImagens()->first());
+
+        return $produtoFinded;
+    }
+
+    /**
+     * @depends testCreateRandomSimpleProduto
+     */
+    public function testUpdateSimpleProduto(array $result): Produto
+    {
+        sleep(3); //Esperando o produto simples confirmar cadastro
+
+        /** @var Produto $produtoModel */
+        $produtoModel = new Produto();
+        $produtoModel->sku = $result['produtoModel']->sku;
+        $produtoModel->titulo = 'Título do produto atualizado pelo SKU';
+
+        $produtoEdited = $this->getIderisSdk()->produto()->update($produtoModel);
+
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtoEdited);
+        $this->assertEquals('Título do produto atualizado pelo SKU', $produtoEdited->titulo);
+
+        /** @var Produto $produtoModel */
+        $produtoModel = new Produto();
+        $produtoModel->id = $produtoEdited->id;
+        $produtoModel->titulo = 'Título do produto atualizado pelo ID';
+
+        $produtoEdited = $this->getIderisSdk()->produto()->update($produtoModel);
+
+        $this->assertInstanceOf(ProdutoRetornado::class, $produtoEdited);
+        $this->assertEquals('Título do produto atualizado pelo ID', $produtoEdited->titulo);
+
+        return $produtoModel;
     }
 
     public function testCreateRandomProdutoVariacao(): array
@@ -69,7 +165,7 @@ class ProdutoTest extends TestCaseApi
      */
     public function testCreateRandomProdutoComposto(array $result): array
     {
-        sleep(10); //Esperando o produto simples confirmar cadastro
+        sleep(3); //Esperando o produto simples confirmar cadastro
 
         $produtoModel = $this->prepareDadosProduto();
 

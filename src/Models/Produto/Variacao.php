@@ -4,6 +4,7 @@
 namespace Ideris\Models\Produto;
 
 use Ideris\Classes\ModelItemBase;
+use Ideris\Collections\Produto\Imagens;
 
 /**
  * Class Variacao
@@ -16,6 +17,6 @@ class Variacao extends ModelItemBase
         "quantidadeVariacao" => 'int',
         "nomeAtributo"       => 'string',
         "valorAtributo"      => 'string',
-        "Imagem"             => Imagem::class,
+        "Imagem"             => Imagens::class,
     ];
 }

@@ -11,7 +11,7 @@ abstract class CollectionBase extends Collection
     {
         $this->response = $response;
 
-        $result = $this->response->result ?? null;
+        $result = $this->response->result ?? $this->response;
 
         if ($result && is_array($result)) {
             foreach ($this->getAttributeMap() as $attribute => $type) {
