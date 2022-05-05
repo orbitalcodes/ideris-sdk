@@ -10,8 +10,14 @@ abstract class CollectionBase extends Collection
     public function __construct($response = null)
     {
         $this->response = $response;
+        $result = null;
 
-        $result = $this->response->result ?? $this->response;
+        if (is_object($this->response) && property_exists($this->response, 'result') && $this->response->result)
+            $result = $this->response->result;
+        elseif (is_object($this->response) && !property_exists($this->response, 'paging'))
+            $result = $this->response;
+        elseif (is_array($this->response))
+            $result = $this->response;
 
         if ($result && is_array($result)) {
             foreach ($this->getAttributeMap() as $attribute => $type) {
@@ -25,7 +31,7 @@ abstract class CollectionBase extends Collection
                 }
             }
         } else {
-            parent::__construct($response);
+            parent::__construct([]);
         }
     }
 
