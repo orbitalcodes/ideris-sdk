@@ -10,7 +10,7 @@ use Ideris\Endpoints\Auth as AuthEndpoint;
 use Ideris\Endpoints\Atualizacao as UpdateEndpoint;
 use Ideris\Endpoints\Status as StatusEndpoint;
 use Ideris\Endpoints\Marketplace as MarketplaceEndpoint;
-use Ideris\Endpoints\Protocolo as ProtocolEndpoint;
+use Ideris\Endpoints\Protocolo as ProtocoloEndpoint;
 use Ideris\Endpoints\Conta as AccountEndpoint;
 use Ideris\Endpoints\Produto\Ncm as NcmEndpoint;
 use Ideris\Endpoints\Produto\Marca as MarcaEndpoint;
@@ -135,11 +135,11 @@ class Ideris
     }
 
     /**
-     * @return ProtocolEndpoint
+     * @return ProtocoloEndpoint
      */
-    public function protocol(): ProtocolEndpoint
+    public function protocolo(): ProtocoloEndpoint
     {
-        return new ProtocolEndpoint($this->getApiClient());
+        return new ProtocoloEndpoint($this->getApiClient());
     }
 
     /**

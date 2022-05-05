@@ -136,16 +136,28 @@ class ProdutoTest extends TestCaseApi
             (new Imagem(['urlImagem' => $this->faker()->imageUrl(640, 480, 'Ideris produto teste') . '.png']))
         ]);
 
+        $skuVariacao1 = $this->faker()->regexify('[A-Z]{5}[0-4]{3}');
+        $skuVariacao2 = $this->faker()->regexify('[A-Z]{5}[0-4]{3}');
+
         $produtoModel->setVariacao([
             [
-                "skuVariacao"        => $this->faker()->regexify('[A-Z]{5}[0-4]{3}'),
+                "skuVariacao"        => $skuVariacao1,
                 "quantidadeVariacao" => $this->faker()->randomNumber(3, true),
-                "nomeAtributo"       => $this->faker()->word(),
-                "valorAtributo"      => $this->faker()->randomFloat(1, 51, 100),
+                "nomeAtributo"       => 'Tamanho',
+                "valorAtributo"      => 'M',
                 "Imagem"             => [
                     ['imagemBase64' => $this->getImagemBase64Faker()]
                 ]
-            ]
+            ],
+            [
+                "skuVariacao"        => $skuVariacao2,
+                "quantidadeVariacao" => $this->faker()->randomNumber(3, true),
+                "nomeAtributo"       => 'Tamanho',
+                "valorAtributo"      => 'G',
+                "Imagem"             => [
+                    ['imagemBase64' => $this->getImagemBase64Faker()]
+                ]
+            ],
         ]);
 
         $this->assertInstanceOf(Produto::class, $produtoModel);
