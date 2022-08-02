@@ -92,11 +92,10 @@ class Ideris
 
         $stateKey = AuthEndpoint::PREFIX_KEY_STATE . md5($this->login_token);
 
-        $this->jwt_token = $stateService->getState($stateKey);
+        $jwt_token = $stateService->getState($stateKey);
 
-        if (!$this->jwt_token || JWT::verifyExpired($this->jwt_token)) {
-            $authPoint = new AuthEndpoint($this->getApiClient());
-            $authModel = $authPoint->authentication($this->login_token);
+        if (!$jwt_token || JWT::verifyExpired($jwt_token)) {
+            $authModel = $this->auth()->authentication($this->login_token);
             $this->jwt_token = $authModel->getJwtToken();
             $stateService->saveState($stateKey, $this->jwt_token);
         }
